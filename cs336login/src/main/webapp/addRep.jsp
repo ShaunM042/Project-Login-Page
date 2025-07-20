@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String ssn = request.getParameter("ssn");
     String firstName = request.getParameter("firstName");
@@ -11,15 +12,14 @@
     PreparedStatement psEmployee = null;
     
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         
         // Check if username already exists
         PreparedStatement checkUser = conn.prepareStatement("SELECT * FROM users WHERE Username = ?");
         checkUser.setString(1, username);
         ResultSet rs = checkUser.executeQuery();
         if (rs.next()) {
-            response.sendRedirect("manageReps.jsp?error=Username already exists");
+            response.sendRedirect("manageReps.jsp?error=Username+already+exists");
             return;
         }
         
@@ -28,7 +28,7 @@
         checkSSN.setInt(1, Integer.parseInt(ssn));
         ResultSet ssnRs = checkSSN.executeQuery();
         if (ssnRs.next()) {
-            response.sendRedirect("manageReps.jsp?error=Employee with this SSN already exists");
+            response.sendRedirect("manageReps.jsp?error=Employee+with+this+SSN+already+exists");
             return;
         }
         
@@ -46,11 +46,11 @@
         psEmployee.setString(4, username);
         psEmployee.executeUpdate();
         
-        response.sendRedirect("manageReps.jsp?message=Representative added successfully");
+        response.sendRedirect("manageReps.jsp?message=Representative+added+successfully");
         
     } catch (Exception e) {
         e.printStackTrace();
-        response.sendRedirect("manageReps.jsp?error=Failed to add representative: " + e.getMessage());
+        response.sendRedirect("manageReps.jsp?error=Failed+to+add+representative:+" + e.getMessage());
     } finally {
         try { if (psUser != null) psUser.close(); } catch (Exception e) {}
         try { if (psEmployee != null) psEmployee.close(); } catch (Exception e) {}

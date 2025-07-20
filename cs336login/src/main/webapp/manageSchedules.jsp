@@ -40,7 +40,7 @@
         </tr>
         <%
             try {
-                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+                Connection conn = getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM train_schedule");
 

@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
@@ -16,8 +17,7 @@
     PreparedStatement ps = null;
     
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         
         // Verify reservation belongs to current user and is future dated
         PreparedStatement checkPs = conn.prepareStatement(

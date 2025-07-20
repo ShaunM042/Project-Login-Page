@@ -32,9 +32,10 @@ DATABASE SETUP:
 IMPORTANT NOTES:
 ===============
 
-1. UPDATE DATABASE PASSWORDS:
-   - All JSP files use "polk6699" as MySQL password
-   - Update this to your actual MySQL password in all files
+1. DATABASE CONNECTION:
+   - Uses centralized connection through dbConnection.jsp
+   - Update password in dbConnection.jsp only (currently set to "polk6699")
+   - All JSP files automatically use this centralized connection
 
 2. SAMPLE DATA:
    - Schema includes sample train schedules and stations
@@ -63,10 +64,12 @@ TECHNICAL DETAILS:
 =================
 
 - Java/JSP with MySQL backend
+- Centralized database connection management (dbConnection.jsp)
 - Role-based access control
 - Responsive web interface
-- SQL injection protection
+- SQL injection protection with PreparedStatements
 - Session management
 - Input validation
+- Proper resource cleanup and error handling
 
 All 100 points from the project checklist have been implemented and tested.

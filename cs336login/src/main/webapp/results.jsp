@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String origin = request.getParameter("origin");
     String destination = request.getParameter("destination");
@@ -12,15 +13,18 @@
     ResultSet rs = null;
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "yourpassword");
+        conn = getConnection();
 
         String orderBy = "Number_of_Stops";
         if ("fare".equals(sort)) {
             orderBy = "Fare";
+        } else if ("departure".equals(sort)) {
+            orderBy = "Departure_Time";
+        } else if ("arrival".equals(sort)) {
+            orderBy = "Arrival_Time";
         }
 
-        String sql = "SELECT Train_Number, Transit_Line_Name, Departure_Time, Number_of_Stops, Fare " +
+        String sql = "SELECT Train_Number, Transit_Line_Name, Departure_Time, Arrival_Time, Number_of_Stops, Fare " +
                      "FROM train_schedule " +
                      "WHERE Origin_Station = ? AND Destination_Station = ? AND Travel_Date = ? " +
                      "ORDER BY " + orderBy;
@@ -40,6 +44,7 @@
         <th>Train Number</th>
         <th>Transit Line</th>
         <th>Departure Time</th>
+        <th>Arrival Time</th>
         <th>Stops</th>
         <th>Fare</th>
         <th>Details</th>
@@ -54,6 +59,7 @@
             <td><%= rs.getString("Train_Number") %></td>
             <td><%= rs.getString("Transit_Line_Name") %></td>
             <td><%= rs.getString("Departure_Time") %></td>
+            <td><%= rs.getString("Arrival_Time") != null ? rs.getString("Arrival_Time") : "N/A" %></td>
             <td><%= rs.getInt("Number_of_Stops") %></td>
             <td>$<%= rs.getDouble("Fare") %></td>
             <td><a href="trainStops.jsp?trainNumber=<%= rs.getString("Train_Number") %>">View Stops</a></td>
@@ -63,7 +69,7 @@
         }
         if (!found) {
     %>
-        <tr><td colspan="7">No matching trains found.</td></tr>
+        <tr><td colspan="8">No matching trains found.</td></tr>
     <%
         }
     %>

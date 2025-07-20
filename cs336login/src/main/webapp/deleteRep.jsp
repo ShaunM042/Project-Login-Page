@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String ssn = request.getParameter("ssn");
     if (ssn == null) {
@@ -11,8 +12,7 @@
     PreparedStatement psUser = null;
     
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         
         // Get username before deleting employee record
         PreparedStatement getUsername = conn.prepareStatement("SELECT Username FROM employee WHERE SSN = ?");

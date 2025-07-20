@@ -2,7 +2,7 @@
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
-        response.sendRedirect("login.jsp?error=Please login to make a reservation");
+        response.sendRedirect("login.jsp?error=Please+login+to+make+a+reservation");
         return;
     }
     

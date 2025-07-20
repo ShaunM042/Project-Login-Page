@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,8 +39,7 @@
     ResultSet rs = null;
     
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         
         ps = conn.prepareStatement(sql);
         if (searchKeywords != null && !searchKeywords.trim().isEmpty()) {

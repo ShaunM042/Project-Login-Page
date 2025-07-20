@@ -1,24 +1,23 @@
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String username = request.getParameter("username");
-    String password = request.getParameter("password");
-
-    String dbURL = "jdbc:mysql://localhost:3306/reservation"; 
-    String dbUser = "root"; 
-    String dbPass = "polk6699"; 
+    String userPassword = request.getParameter("password");
 
     boolean valid = false;
     String userRole = null;
+
+    Connection conn = null;
+
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
+        conn = getConnection();
         
         // First check users table for authentication and role
         PreparedStatement ps = conn.prepareStatement(
             "SELECT Role FROM users WHERE Username=? AND Password=?"
         ); 
         ps.setString(1, username);
-        ps.setString(2, password);
+        ps.setString(2, userPassword);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             valid = true;
@@ -29,7 +28,7 @@
                 "SELECT * FROM customer WHERE Username=? AND Password=?"
             );
             custPs.setString(1, username);
-            custPs.setString(2, password);
+            custPs.setString(2, userPassword);
             ResultSet custRs = custPs.executeQuery();
             if (custRs.next()) {
                 valid = true;
@@ -44,7 +43,7 @@
 
 	} catch (Exception e) {
 		e.printStackTrace();
-        response.sendRedirect("login.jsp?error=Database+connection+error");
+        response.sendRedirect("login.jsp?error=Database+query+failed");
         return;
 	}
 
@@ -64,4 +63,3 @@
         response.sendRedirect("login.jsp?error=Invalid+username+or+password");
     }
 %>
-}

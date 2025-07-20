@@ -1,9 +1,10 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
-        response.sendRedirect("login.jsp?error=Please login to answer questions");
+        response.sendRedirect("login.jsp?error=Please+login+to+answer+questions");
         return;
     }
     
@@ -11,7 +12,7 @@
     String answer = request.getParameter("answer");
     
     if (qidStr == null || answer == null || answer.trim().isEmpty()) {
-        response.sendRedirect("customerQuestions.jsp?error=Invalid question or answer");
+        response.sendRedirect("customerQuestions.jsp?error=Invalid+question+or+answer");
         return;
     }
     
@@ -19,8 +20,7 @@
     PreparedStatement ps = null;
     
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         
         int qid = Integer.parseInt(qidStr);
         
