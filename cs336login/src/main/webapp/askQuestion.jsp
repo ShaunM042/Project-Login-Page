@@ -2,7 +2,7 @@
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
-        response.sendRedirect("login.jsp?error=Please login to ask a question");
+        response.sendRedirect("login.jsp?error=Please+login+to+ask+a+question");
         return;
     }
 %>

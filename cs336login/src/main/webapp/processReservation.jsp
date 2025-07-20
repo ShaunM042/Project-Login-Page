@@ -1,9 +1,10 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
-        response.sendRedirect("login.jsp?error=Please login to make a reservation");
+        response.sendRedirect("login.jsp?error=Please+login+to+make+a+reservation");
         return;
     }
     
@@ -33,8 +34,7 @@
         boolean isRoundTrip = "roundtrip".equals(tripType);
         if (isRoundTrip) totalFare *= 2;
         
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         
         // Generate unique reservation number
         Random rand = new Random();

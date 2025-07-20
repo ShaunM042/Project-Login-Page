@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,14 +25,13 @@
         ResultSet rs = null;
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+            conn = getConnection();
             
             String sql = "SELECT r.Username, c.Name, SUM(r.Total_Fare) as TotalSpent, " +
                         "COUNT(*) as ReservationCount, AVG(r.Total_Fare) as AvgPerReservation " +
                         "FROM reservation r " +
                         "LEFT JOIN customer c ON r.Username = c.Username " +
-                        "GROUP BY r.Username " +
+                        "GROUP BY r.Username, c.Name " +
                         "ORDER BY TotalSpent DESC " +
                         "LIMIT 10";
             

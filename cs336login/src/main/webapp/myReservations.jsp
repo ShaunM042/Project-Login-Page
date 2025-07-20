@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
-        response.sendRedirect("login.jsp?error=Please login to view reservations");
+        response.sendRedirect("login.jsp?error=Please+login+to+view+reservations");
         return;
     }
 %>
@@ -45,8 +46,7 @@
         boolean hasCurrentReservations = false;
         
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+            conn = getConnection();
             
             // Current reservations (future dates)
             ps = conn.prepareStatement(

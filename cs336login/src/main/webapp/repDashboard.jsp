@@ -1,26 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String username = (String) session.getAttribute("username");
     if (username == null) {
-        response.sendRedirect("login.jsp?error=Please login as customer representative");
+        response.sendRedirect("login.jsp?error=Please+login+as+customer+representative");
         return;
     }
     
     // Check if user is a customer rep
     boolean isRep = false;
+    Connection conn = null;
+    
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee WHERE Username = ?");
         ps.setString(1, username);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) isRep = true;
+        rs.close();
+        ps.close();
         conn.close();
-    } catch (Exception e) {}
+    } catch (Exception e) {
+        out.println("Error checking representative role: " + e.getMessage());
+        return;
+    }
     
     if (!isRep) {
-        response.sendRedirect("welcome.jsp?error=Customer representative access required");
+        response.sendRedirect("welcome.jsp?error=Customer+representative+access+required");
         return;
     }
 %>

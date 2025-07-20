@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ include file="dbConnection.jsp" %>
 <%
     String ssn = request.getParameter("ssn");
     String name = request.getParameter("name");
@@ -12,14 +13,13 @@
     PreparedStatement psCustomer = null;
 
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/reservation", "root", "polk6699");
+        conn = getConnection();
 
         PreparedStatement checkUser = conn.prepareStatement("SELECT * FROM users WHERE Username = ?");
         checkUser.setString(1, username);
         ResultSet rs = checkUser.executeQuery();
         if (rs.next()) {
-            response.sendRedirect("register.jsp?error=Username already exists");
+            response.sendRedirect("register.jsp?error=Username+already+exists");
             return;
         }
 

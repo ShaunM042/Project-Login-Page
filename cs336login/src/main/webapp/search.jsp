@@ -17,6 +17,8 @@
         <select name="sort">
             <option value="stops">Number of Stops</option>
             <option value="fare">Fare</option>
+            <option value="departure">Departure Time</option>
+            <option value="arrival">Arrival Time</option>
         </select><br><br>
 
         <input type="submit" value="Search">
